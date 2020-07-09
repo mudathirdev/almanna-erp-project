@@ -1,130 +1,149 @@
 <odoo>
-  <data>
+    <data>
 
-    <record id="view_order_form" model="ir.ui.view">
-      <field name="name">Customer Create Restriction</field>
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="sale.view_order_form"/>
-      <field name="arch" type="xml">
-        <field name="partner_id" position="replace">
+        <record id="view_order_form_inherit_sale_stock_inherit" model="ir.ui.view">
+            <field name="name">Sale Order Sale Stock Inherit</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <xpath expr="//field[@name='warehouse_id']" position="after">
+                    <field name="location_id" options="{'no_create': True}" required="1"/>
+                </xpath>
+            </field>
+        </record>
 
-          <field name="partner_id" domain="[('customer','=',True)]" context="{'search_default_customer':1, 'show_address': 1}" options='{"always_reload": True,"no_create_edit": True,"no_open": True}'/>
+        <record id="view_order_form" model="ir.ui.view">
+            <field name="name">Customer Create Restriction</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale.view_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
 
-        </field>
+                    <field name="partner_id" domain="[('customer','=',True)]"
+                           context="{'search_default_customer':1, 'show_address': 1}"
+                           options='{"always_reload": True,"no_create_edit": True,"no_open": True}'/>
 
-        <button name="action_cancel" position="after">
-          <button name="canecl_order" string="Sale Order Cancel"
-           type="object"
-           class="oe_highlight"
-           groups="base.group_user" states='sale'/>
+                </field>
 
-        </button>
+                <button name="action_cancel" position="after">
+                    <button name="canecl_order" string="Sale Order Cancel"
+                            type="object"
+                            class="oe_highlight"
+                            groups="base.group_user" states='sale'/>
 
-
-        <button name="action_cancel" position="replace">
-         
-
-        </button>
-
-      </field>
-    </record>
-
-
-    <record id="view_order_location_form" model="ir.ui.view">
-      <field name="name">Location Sale Order</field>
-      <field name="model">sale.order</field>
-      <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
-      <field name="arch" type="xml">
-        <data>
+                </button>
 
 
-          <xpath expr="//field[@name='warehouse_id']" position="after">
-            <field name="location_id" required="0" invisible="1"/>
-          </xpath>
-        </data>
-      </field>
-    </record>
+                <button name="action_cancel" position="replace">
 
 
+                </button>
+
+            </field>
+        </record>
 
 
-    <record id="purchase_order_form" model="ir.ui.view">
-      <field name="name">Vendor Create Restriction</field>
-      <field name="model">purchase.order</field>
-      <field name="inherit_id" ref="purchase.purchase_order_form"/>
-      <field name="arch" type="xml">
-        <field name="partner_id" position="replace">
-
-          <field name="partner_id" context="{'search_default_supplier':1, 'default_supplier':1, 'default_customer':0}" domain="[('supplier','=',True)]" options="{'no_create_edit': True,'no_open': True}" />
-
-        </field>
-      </field>
-    </record>
+        <record id="view_order_location_form" model="ir.ui.view">
+            <field name="name">Location Sale Order</field>
+            <field name="model">sale.order</field>
+            <field name="inherit_id" ref="sale_stock.view_order_form_inherit_sale_stock"/>
+            <field name="arch" type="xml">
+                <data>
 
 
+                    <xpath expr="//field[@name='warehouse_id']" position="after">
+                        <field name="location_id" required="0" invisible="1"/>
+                    </xpath>
+                </data>
+            </field>
+        </record>
 
 
+        <record id="purchase_order_form" model="ir.ui.view">
+            <field name="name">Vendor Create Restriction</field>
+            <field name="model">purchase.order</field>
+            <field name="inherit_id" ref="purchase.purchase_order_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+
+                    <field name="partner_id"
+                           context="{'search_default_supplier':1, 'default_supplier':1, 'default_customer':0}"
+                           domain="[('supplier','=',True)]" options="{'no_create_edit': True,'no_open': True}"/>
+
+                </field>
+            </field>
+        </record>
 
 
-
-    <record id="view_picking_form" model="ir.ui.view">
-      <field name="name">Vendor Create Restriction</field>
-      <field name="model">stock.picking</field>
-      <field name="inherit_id" ref="stock.view_picking_form"/>
-      <field name="arch" type="xml">
-        <field name="partner_id" position="replace">
-          <field name="partner_id" attrs="{'invisible': [('picking_type_code', '=', 'internal')]}" options='{"no_create_edit": True,"no_open": True}'/>
-
-
-        </field>
-      </field>
-    </record>
+        <record id="view_picking_form" model="ir.ui.view">
+            <field name="name">Vendor Create Restriction</field>
+            <field name="model">stock.picking</field>
+            <field name="inherit_id" ref="stock.view_picking_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+                    <field name="partner_id" attrs="{'invisible': [('picking_type_code', '=', 'internal')]}"
+                           options='{"no_create_edit": True,"no_open": True}'/>
 
 
-    <record id="invoice_supplier_form" model="ir.ui.view">
-      <field name="name">Vendor Create Restriction</field>
-      <field name="model">account.invoice</field>
-      <field name="inherit_id" ref="account.invoice_supplier_form"/>
-      <field name="arch" type="xml">
-        <field name="partner_id" position="replace">
-
-          <field string="Vendor" name="partner_id" context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1, 'default_company_type': 'company'}" domain="[('supplier', '=', True)]" options='{"no_create_edit": True,"no_open": True}'/>
+                </field>
+            </field>
+        </record>
 
 
-        </field>
-      </field>
-    </record>
+        <record id="invoice_supplier_form" model="ir.ui.view">
+            <field name="name">Vendor Create Restriction</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_supplier_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
+
+                    <field string="Vendor" name="partner_id"
+                           context="{'default_customer': 0, 'search_default_supplier': 1, 'default_supplier': 1, 'default_company_type': 'company'}"
+                           domain="[('supplier', '=', True)]" options='{"no_create_edit": True,"no_open": True}'/>
 
 
+                </field>
+            </field>
+        </record>
 
 
-    <record id="invoice_form" model="ir.ui.view">
-      <field name="name">Customer Create Restriction</field>
-      <field name="model">account.invoice</field>
-      <field name="inherit_id" ref="account.invoice_form"/>
-      <field name="arch" type="xml">
-        <field name="partner_id" position="replace">
+        <record id="invoice_form" model="ir.ui.view">
+            <field name="name">Customer Create Restriction</field>
+            <field name="model">account.invoice</field>
+            <field name="inherit_id" ref="account.invoice_form"/>
+            <field name="arch" type="xml">
+                <field name="partner_id" position="replace">
 
-          <field string="Customer" name="partner_id" context="{'search_default_customer':1, 'show_address': 1, 'default_company_type': 'company'}" options="{'always_reload': True, 'no_quick_create': True,'no_create_edit': True,'no_open': True}" domain="[('customer', '=', True)]" />
-
-
-        </field>
-      </field>
-    </record>
-
-    <menuitem id="account.menu_account_customer" name="Customers" parent="account.menu_finance_receivables_master_data" action="base.action_partner_customer_form" groups="group_partner_owner" sequence="100"/>
+                    <field string="Customer" name="partner_id"
+                           context="{'search_default_customer':1, 'show_address': 1, 'default_company_type': 'company'}"
+                           options="{'always_reload': True, 'no_quick_create': True,'no_create_edit': True,'no_open': True}"
+                           domain="[('customer', '=', True)]"/>
 
 
-    <menuitem id="account.menu_account_supplier" name="Vendors" parent="account.menu_finance_payables_master_data" action="base.action_partner_supplier_form" sequence="100" groups="group_partner_owner" />
+                </field>
+            </field>
+        </record>
 
-    <menuitem id="sale.res_partner_menu" parent="sale.sale_order_menu" action="base.action_partner_form" sequence="3" groups="group_partner_owner"/>
-
-
-    <menuitem id="purchase.menu_procurement_management_supplier_name" name="Vendors" parent="purchase.menu_procurement_management" action="base.action_partner_supplier_form" sequence="15" groups="group_partner_owner"/>
-
-
-    <menuitem name="Contacts" id="contacts.menu_contacts" sequence="4" web_icon="contacts,static/description/icon.png" groups="group_partner_owner"/>
+        <menuitem id="account.menu_account_customer" name="Customers"
+                  parent="account.menu_finance_receivables_master_data" action="base.action_partner_customer_form"
+                  groups="group_partner_owner" sequence="100"/>
 
 
-  </data>
+        <menuitem id="account.menu_account_supplier" name="Vendors" parent="account.menu_finance_payables_master_data"
+                  action="base.action_partner_supplier_form" sequence="100" groups="group_partner_owner"/>
+
+        <menuitem id="sale.res_partner_menu" parent="sale.sale_order_menu" action="base.action_partner_form"
+                  sequence="3" groups="group_partner_owner"/>
+
+
+        <menuitem id="purchase.menu_procurement_management_supplier_name" name="Vendors"
+                  parent="purchase.menu_procurement_management" action="base.action_partner_supplier_form" sequence="15"
+                  groups="group_partner_owner"/>
+
+
+        <menuitem name="Contacts" id="contacts.menu_contacts" sequence="4"
+                  web_icon="contacts,static/description/icon.png" groups="group_partner_owner"/>
+
+
+    </data>
 </odoo>
