@@ -1,0 +1,53 @@
+<odoo>
+  <data>
+
+    <record id="view_employee_form_attachment" model="ir.ui.view">
+      <field name="name">HR Employee Attachment</field>
+      <field name="model">hr.employee</field>
+      <field name="inherit_id" ref="hr.view_employee_form"/>
+      <field name="arch" type="xml">
+        <data>
+
+          <field name="job_id" position="after">
+            <field name="start_date"/>
+          </field>
+
+          <page name="hr_settings" position="after">
+
+
+
+            <page name="hr_attachment" string="HR Attachments">
+              <group colspan="4" col="4" string="Primary Documents">
+                <field name="emp_application_form_attach"/>
+                <field name="cv_attach" />
+                <field name="app_medical_check_attach" />
+                <field name="military_id_attach" />
+                <field name="passport_id_attach" />
+                <field name="eight_colored_photo_emp_attach" />
+                <field name="social_insurance_attach" />
+                <field name="res_cert_attach" />
+
+
+
+                <field name="edu_certif_attach_ids" widget="many2many_binary"/>
+                <field name="prev_exp_attach_ids" widget="many2many_binary"/>
+                <field name="driving_licences_attach" widget="many2many_binary"/>
+              </group>
+
+              <group colspan="4" col="4" string="Secondry Documents">
+                <field name="marriage_cert_attach_ids" widget="many2many_binary"/>
+                <field name="birth_certi_attach_ids" widget="many2many_binary"/>
+                <field name="spouse_children_attach_ids" widget="many2many_binary"/>
+                <field name="other_attach_ids" widget="many2many_binary"/>
+              </group>
+
+            </page>
+          </page>
+        </data>
+      </field>
+    </record>
+
+
+
+  </data>
+</odoo>
