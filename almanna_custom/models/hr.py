@@ -27,26 +27,3 @@ class hrEmployee(models.Model):
     spouse_children_attach_ids = fields.Many2many('ir.attachment',string="Spouses and Children Photos",relation="spo_child_attachment")
     prev_exp_attach_ids = fields.Many2many('ir.attachment',string="Previous Experience Training/Certificates",relation="prev_exp_attachment")
     other_attach_ids = fields.Many2many('ir.attachment',string="Others Attachments",relation="other_attachment")
-
-
-
-    # @api.onchange('name')
-    # def onchange_category_ids(self):
-    #     print(">>>>>>>>>>>>>>>>>>>>>>>>>.HERERE")
-
-        
-    #     return {'domain': {'category_ids': [('id','=',0)]}}
-
-
-    # @api.onchange('vendor','product')
-    # def onchange_fields(self):
-    #     """
-    #         return new domain for field origin when vendor or product changes
-    #     """
-    #     origin_obj = self.env['purchase.order']
-    #     origin_records = origin_obj.search([])
-
-    #     return {'domain': {'origin': [('id','in',origin_records.ids)]}}
-
-
-    # origin = fields.Many2one('purchase.order','Origin')

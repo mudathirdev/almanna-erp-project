@@ -25,9 +25,13 @@
     'data': [
 	'security/almanna_security.xml',
         # 'security/ir.model.access.csv',
-        'views/views.xml',
+        'views/sale_views.xml',
+        'views/purchase_views.xml',
+        'views/stock_views.xml',
+        'views/invoice_views.xml',
         'views/hr_views.xml',
-        'views/templates.xml',
+        'views/views.xml',
+        
     ],
     # only loaded in demonstration mode
     'demo': [
