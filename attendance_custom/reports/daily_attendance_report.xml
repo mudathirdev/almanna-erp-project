@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Daily Attendance Report Action -->
+        <report
+            id="daily_attendance_report"
+            model="hr.attendance"
+            string="Print to XLSX"
+            report_type="xlsx"
+            name="attendance_custom.daily_attendance_report"
+            file="Daily Attendance Report"
+            attachment_use="False"
+            menu="False"
+        />
+    </data>
+</odoo>
