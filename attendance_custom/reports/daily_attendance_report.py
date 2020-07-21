@@ -25,6 +25,7 @@ class AttendanceXLSX(models.AbstractModel):
         # Setup columns
         sheet = workbook.add_worksheet(report_name[:31])
         titles = workbook.add_format({'align': 'center', 'bold': True})
+        t_heading = workbook.add_format({'align': 'center', 'bold': True, 'bg_color': '#BD5B5B', 'border': 1})
         sheet.set_column('C:C', 25)
         sheet.set_column('D:D', 20)
         sheet.set_column('E:E', 25)
@@ -36,7 +37,7 @@ class AttendanceXLSX(models.AbstractModel):
         sheet.write('E1', 'HR DEPARTMENT', titles)
         sheet.write('E2', 'DAILY ATTENDANCE REPORT', titles)
         sheet.write('E4', 'DATE : ' + data['form']['date'], titles)
-        sheet.write_row('B6', ['#', 'Name', 'Job Title', 'Department', 'Enter', 'Exit', 'Worked hours'], titles)
+        sheet.write_row('B6', ['Emp ID', 'Name', 'Job Title', 'Department', 'Enter', 'Exit', 'Worked hours'], t_heading)
 
         # Add company logo
         logo = self.env.user.sudo().company_id.logo
@@ -48,14 +49,16 @@ class AttendanceXLSX(models.AbstractModel):
         for obj in attendances:
             rgb_color = obj.employee_id.department_id.color
             color = rgb_to_hex(eval(rgb_color[rgb_color.index('('):rgb_color.rindex(',') - 1] + ")"))
-            attendance = workbook.add_format({'bg_color': color, 'align': 'center'})
-            sheet.write_row('B' + str(row + 6),
-                            [row,
-                             obj.employee_id.name,
+            emp_id = workbook.add_format({'bg_color': '#F09481', 'align': 'center', 'border': 1})
+            attendance = workbook.add_format({'bg_color': color, 'align': 'center', 'border': 1})
+            time = workbook.add_format({'bg_color': 'silver', 'align': 'center', 'border': 1})
+            sheet.write_row('B' + str(row + 6), [row], emp_id)
+            sheet.write_row('C' + str(row + 6),
+                            [obj.employee_id.name,
                              obj.employee_id.job_id.name,
-                             obj.employee_id.department_id.name,
-                             datetime.strptime(obj.check_in, "%Y-%m-%d %H:%M:%S").strftime('%H:%M:%S'),
-                             datetime.strptime(obj.check_out, "%Y-%m-%d %H:%M:%S").strftime('%H:%M:%S'),
-                             round(obj.worked_hours, 2)],
-                            attendance)
+                             obj.employee_id.department_id.name], attendance)
+            sheet.write_row('F' + str(row + 6),
+                            [datetime.strptime(obj.check_in, "%Y-%m-%d %H:%M:%S").strftime('%H:%M'),
+                             datetime.strptime(obj.check_out, "%Y-%m-%d %H:%M:%S").strftime('%H:%M'),
+                             round(obj.worked_hours, 2)], time)
             row += 1
