@@ -15,13 +15,13 @@ class AttendanceXLSX(models.AbstractModel):
 
         # Setup sheet and data
         report_name = "DAILY ATTENDANCE REPORT"
-        attendances = self.env['hr.attendance'].search([], order='department_id DESC')
+        attendances = self.env['hr.attendance'].search([])
 
         attendances = attendances.filtered(lambda attend:
                                            datetime.strptime(attend.check_in, "%Y-%m-%d %H:%M:%S").strftime('%Y-%m-%d')
                                            == data['form']['date'])
         attendances = attendances.sorted(lambda r: r.department_id.id)
-        print(attendances)
+
         # Setup columns
         sheet = workbook.add_worksheet(report_name[:31])
         titles = workbook.add_format({'align': 'center', 'bold': True})

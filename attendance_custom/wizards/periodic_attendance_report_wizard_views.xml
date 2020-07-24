@@ -3,13 +3,14 @@
     <data>
 
         <!-- Wizard form view -->
-        <record id="daily_attendance_wizard_form" model="ir.ui.view">
-            <field name="name">daily.attendance.wizard.form</field>
-            <field name="model">attendance_custom.daily_report_wizard</field>
+        <record id="periodic_attendance_wizard_form" model="ir.ui.view">
+            <field name="name">periodic.attendance.wizard.form</field>
+            <field name="model">attendance_custom.periodic_report_wizard</field>
             <field name="arch" type="xml">
                 <form>
                     <group>
-                        <field name="date"/>
+                        <group><field name="date_from"/></group>
+                        <group><field name="date_to"/></group>
                     </group>
                     <footer>
                         <button name="get_report" type="object" class="btn-primary" >
@@ -22,19 +23,19 @@
         </record>
 
         <!-- Wizard action -->
-        <record id="daily_attendance_wizard_action" model="ir.actions.act_window">
-            <field name="name">Daily Attendances</field>
-            <field name="res_model">attendance_custom.daily_report_wizard</field>
+        <record id="periodic_attendance_wizard_action" model="ir.actions.act_window">
+            <field name="name">Periodic Attendances</field>
+            <field name="res_model">attendance_custom.periodic_report_wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
             <field name="target">new</field>
         </record>
 
         <!-- Menu items -->
-        <menuitem id="daily_attendance_menuitem"
+        <menuitem id="periodic_attendance_menuitem"
                   parent="hr_attendance.menu_hr_attendance_report"
-                  name="Daily Attendance Report"
-                  action="daily_attendance_wizard_action"/>
+                  name="Periodic Attendance Report"
+                  action="periodic_attendance_wizard_action"/>
 
     </data>
 </odoo>

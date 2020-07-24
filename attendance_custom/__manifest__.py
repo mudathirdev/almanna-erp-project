@@ -19,6 +19,8 @@
     'data': [
         'views/hr_department.xml',
         'wizards/daily_attendance_report_wizard_views.xml',
-        'reports/daily_attendance_report.xml'
+        'wizards/periodic_attendance_report_wizard_views.xml',
+        'reports/daily_attendance_report.xml',
+        'reports/periodic_attendance_report.xml'
     ],
 }
