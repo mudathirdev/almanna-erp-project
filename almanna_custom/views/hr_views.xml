@@ -18,6 +18,7 @@
 
             <page name="hr_attachment" string="HR Attachments">
               <group colspan="4" col="4" string="Primary Documents">
+              <field name="colorpicker" widget="colorpicker"/>
                 <field name="emp_application_form_attach"/>
                 <field name="cv_attach" />
                 <field name="app_medical_check_attach" />

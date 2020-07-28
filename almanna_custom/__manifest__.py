@@ -24,6 +24,7 @@
     # always loaded
     'data': [
 	'security/almanna_security.xml',
+    'data/almanna_data.xml',
         # 'security/ir.model.access.csv',
         'views/sale_views.xml',
         'views/purchase_views.xml',

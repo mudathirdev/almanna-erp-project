@@ -2,4 +2,6 @@
 
 from . import models
 from . import hr
-from . import sale_order
+from . import sale
+from . import stock
+from . import purchase
