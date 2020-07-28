@@ -195,6 +195,7 @@ class salePlanLine(models.Model):
 
     @api.depends('default_code','plan_qty')
     def _get_plan_info(self):
+        order_line_obj = self.env['sale.order.line']
         for rec in self:
             if rec.plan_qty:
                 total_sale_qty = 0
@@ -204,7 +205,7 @@ class salePlanLine(models.Model):
                 from_date = datetime.strftime(datetime.now().replace(month=month, year=year), "%Y-%m-01")
                 to_date = str(datetime.now().replace(month=month, year=year) + relativedelta(months=+1, day=1, days=-1))[:10]
                 
-                data = self.env['sale.order.line'].read_group(
+                data = order_line_obj.read_group(
                     [
                     ('order_id.confirmation_date','>=',from_date),
                     ('order_id.confirmation_date','<=',to_date) ,
@@ -212,8 +213,9 @@ class salePlanLine(models.Model):
                     ('product_id.default_code', '=', rec.default_code)
                     ],
                     
-                    ['product_uom_qty','default_code'], ['default_code']
+                    ['product_uom_qty','ss'], ['ss']
                     )
+                
                 # [
                 #     {'__domain': ['&', ('default_code', '=', 'Alwaha 225g'), ('order_id.confirmation_date', '>=', '2020-07-01'), ('order_id.confirmation_date', '<=', '2020-07-31'), ('order_id.state', 'in', ['sale']), ('default_code', '=', 'Alwaha 225g')]
                 #     , 'default_code_count': 14,
