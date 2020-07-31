@@ -7,6 +7,7 @@ class hrEmployee(models.Model):
 
 
     start_date = fields.Date('Start Date')
+    colorpicker = fields.Char()
 
     emp_application_form_attach = fields.Binary(string="Application Form")
     cv_attach = fields.Binary(string="CV")
