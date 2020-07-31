@@ -14,7 +14,7 @@ class AttendanceXLSX(models.AbstractModel):
         row = 1
 
         # Setup sheet and data
-        report_name = "DAILY ATTENDANCE REPORT"
+        report_name = datetime.today().strftime("%Y-%m-%d") + "DAILY ATTENDANCE REPORT"
         attendances = self.env['hr.attendance'].search([])
 
         attendances = attendances.filtered(lambda attend:
@@ -48,14 +48,17 @@ class AttendanceXLSX(models.AbstractModel):
 
         for obj in attendances:
             rgb_color = obj.employee_id.department_id.color
-            color = rgb_to_hex(eval(rgb_color[rgb_color.index('('):rgb_color.rindex(',') - 1] + ")"))
+            color = '#FFFFFF'
+            if len(rgb_color) > 1:
+                color = rgb_to_hex(eval(rgb_color[rgb_color.index('('):rgb_color.rindex(',')] + ")"))
+            color = color.upper()
             emp_id = workbook.add_format({'bg_color': '#F09481', 'align': 'center', 'border': 1})
             attendance = workbook.add_format({'bg_color': color, 'align': 'center', 'border': 1})
             time = workbook.add_format({'bg_color': 'silver', 'align': 'center', 'border': 1})
             sheet.write_row('B' + str(row + 6), [row], emp_id)
             sheet.write_row('C' + str(row + 6),
                             [obj.employee_id.name,
-                             obj.employee_id.job_id.name,
+                             obj.employee_id.job_id.name or '-',
                              obj.employee_id.department_id.name], attendance)
             sheet.write_row('F' + str(row + 6),
                             [datetime.strptime(obj.check_in, "%Y-%m-%d %H:%M:%S").strftime('%H:%M'),
