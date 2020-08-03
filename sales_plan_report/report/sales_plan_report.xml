@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<odoo>
-    <report id="sales_plan_pdf"
-            string="Sales Plan Report"
-            model="sales.plan"
-            report_type="qweb-pdf"
-            file="sales_plan_report.sales_plan_report"
-            name="sales_plan_report.sales_plan_report" />
-</odoo>
