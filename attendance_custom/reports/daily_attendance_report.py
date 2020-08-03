@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
-from odoo import models
-from webcolors import rgb_to_hex
-from datetime import datetime
 import base64
 import io
+from datetime import datetime
+
+from webcolors import rgb_to_hex
+
+from odoo import models
+from odoo.fields import Datetime as ODT
 
 
 class AttendanceXLSX(models.AbstractModel):
@@ -18,7 +21,8 @@ class AttendanceXLSX(models.AbstractModel):
         attendances = self.env['hr.attendance'].search([])
 
         attendances = attendances.filtered(lambda attend:
-                                           datetime.strptime(attend.check_in, "%Y-%m-%d %H:%M:%S").strftime('%Y-%m-%d')
+                                           ODT.context_timestamp(attend,
+                                                                 ODT.from_string(attend.check_in)).strftime('%Y-%m-%d')
                                            == data['form']['date'])
         attendances = attendances.sorted(lambda r: r.department_id.id)
 
@@ -61,7 +65,7 @@ class AttendanceXLSX(models.AbstractModel):
                              obj.employee_id.job_id.name or '-',
                              obj.employee_id.department_id.name], attendance)
             sheet.write_row('F' + str(row + 6),
-                            [datetime.strptime(obj.check_in, "%Y-%m-%d %H:%M:%S").strftime('%H:%M'),
-                             datetime.strptime(obj.check_out, "%Y-%m-%d %H:%M:%S").strftime('%H:%M'),
+                            [ODT.context_timestamp(obj, ODT.from_string(obj.check_in)).strftime('%H:%M'),
+                             ODT.context_timestamp(obj, ODT.from_string(obj.check_out)).strftime('%H:%M'),
                              round(obj.worked_hours, 2)], time)
             row += 1

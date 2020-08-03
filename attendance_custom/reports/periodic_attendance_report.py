@@ -6,6 +6,7 @@ from datetime import datetime, timedelta
 from webcolors import rgb_to_hex
 
 from odoo import models
+from odoo.fields import Datetime as ODT
 
 
 class PeriodicAttendanceXLSX(models.AbstractModel):
@@ -68,7 +69,8 @@ class PeriodicAttendanceXLSX(models.AbstractModel):
         sheet.merge_range(0, 2, 0, dates_column, 'HR DEPARTMENT', titles)
         sheet.merge_range(1, 2, 1, dates_column, 'ATTENDANCE REPORT', titles)
         sheet.merge_range(3, 2, 3, dates_column, "AVERAGE WORKING HOURS", titles)
-        sheet.merge_range(5, 2, 5, dates_column, 'FROM : ' + date_from.strftime("%d-%b") + ' TO : ' + date_to.strftime("%d-%b"), center)
+        sheet.merge_range(5, 2, 5, dates_column,
+                          'FROM : ' + date_from.strftime("%d-%b") + ' TO : ' + date_to.strftime("%d-%b"), center)
         sheet.write_row('B8', ['Employee \nID', 'Name', 'Job Title', 'Department'], t_heading)
 
         # Continue titles and company logo after days printed
@@ -95,24 +97,34 @@ class PeriodicAttendanceXLSX(models.AbstractModel):
                                 [obj.name,
                                  obj.job_id.name or '-',
                                  obj.department_id.name], attendance)
-                employee_attendance_ids = obj.attendance_ids.filtered(lambda a:
-                                                                      date_to >= self.Ymd(a.check_in) >= date_from)
+                employee_attendance_ids = \
+                    obj.attendance_ids.filtered(lambda a:
+                                                date_to >=
+                                                ODT.from_string(ODT.context_timestamp(a,
+                                                                                      ODT.from_string(
+                                                                                          a.check_in)).strftime(
+                                                    "%Y-%m-%d"))
+                                                >= date_from)
                 day_column = 5
                 for a_date in dates:
                     a_date_attendances = employee_attendance_ids.filtered(lambda attend:
-                                                                          datetime.strptime(attend.check_in,
-                                                                                            "%Y-%m-%d %H:%M:%S")
+                                                                          ODT.context_timestamp(attend, ODT.from_string(
+                                                                              attend.check_in))
                                                                           .strftime('%Y-%m-%d') ==
                                                                           a_date.strftime("%Y-%m-%d") and
-                                                                          datetime.strptime(attend.check_out,
-                                                                                            "%Y-%m-%d %H:%M:%S")
+                                                                          ODT.context_timestamp(attend, ODT.from_string(
+                                                                              attend.check_out))
                                                                           .strftime('%Y-%m-%d') ==
                                                                           a_date.strftime("%Y-%m-%d"))
                     if a_date_attendances:
-                        first_check_in = a_date_attendances.sorted(lambda a: a.check_in)[0].check_in
-                        first_check_in = datetime.strptime(first_check_in, "%Y-%m-%d %H:%M:%S").strftime('%H:%M')
-                        last_check_out = a_date_attendances.sorted(lambda a: a.check_out)[-1].check_out
-                        last_check_out = datetime.strptime(last_check_out, "%Y-%m-%d %H:%M:%S").strftime('%H:%M')
+                        first_check_in_rec = a_date_attendances.sorted(lambda a: a.check_in)[0]
+                        first_check_in = ODT.context_timestamp(first_check_in_rec,
+                                                               ODT.from_string(first_check_in_rec.check_in))
+                        first_check_in = first_check_in.strftime('%H:%M')
+                        last_check_out_rec = a_date_attendances.sorted(lambda a: a.check_out)[-1]
+                        last_check_out = ODT.context_timestamp(last_check_out_rec,
+                                                               ODT.from_string(last_check_out_rec.check_out))
+                        last_check_out = last_check_out.strftime('%H:%M')
                         worked_hours = sum(a_date_attendances.mapped('worked_hours'))
                         num_days += 1
                         total_hours += worked_hours
