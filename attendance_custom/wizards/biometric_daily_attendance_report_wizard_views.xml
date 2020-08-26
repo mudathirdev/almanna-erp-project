@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+
+        <!-- Wizard form view -->
+        <record id="biometric_daily_attendance_wizard_form" model="ir.ui.view">
+            <field name="name">biometric.daily.attendance.wizard.form</field>
+            <field name="model">attendance_custom.biometric_daily_report_wizard</field>
+            <field name="arch" type="xml">
+                <form>
+                    <group>
+                        <field name="date"/>
+                    </group>
+                    <footer>
+                        <button name="get_report" type="object" class="btn-primary" >
+                            <i class="fa fa-download"/> GET
+                        </button>
+                        <button string="Cancel" class="btn-default" special="cancel"/>
+                    </footer>
+                </form>
+            </field>
+        </record>
+
+        <!-- Wizard action -->
+        <record id="biometric_daily_attendance_wizard_action" model="ir.actions.act_window">
+            <field name="name">Biometric Daily Attendances</field>
+            <field name="res_model">attendance_custom.biometric_daily_report_wizard</field>
+            <field name="view_type">form</field>
+            <field name="view_mode">form</field>
+            <field name="target">new</field>
+        </record>
+
+        <!-- Menu items -->
+        <menuitem id="biometric_daily_attendance_menuitem"
+                  parent="hr_attendance.menu_hr_attendance_report"
+                  name="Biometric Daily Attendance Report"
+                  action="biometric_daily_attendance_wizard_action"/>
+
+    </data>
+</odoo>

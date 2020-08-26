@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Biometric Periodic Attendance Report Action -->
+        <report
+            id="biometric_periodic_attendance_report"
+            model="zk.machine.attendance"
+            string="Periodic Report XLSX"
+            report_type="xlsx"
+            name="attendance_custom.biometric_periodic_attendance_report"
+            file="Biometric Periodic Attendance Report"
+            attachment_use="False"
+            menu="False"
+        />
+    </data>
+</odoo>
