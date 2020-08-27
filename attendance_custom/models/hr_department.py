@@ -9,3 +9,4 @@ class HrDepartment(models.Model):
     _inherit = 'hr.department'
 
     color = fields.Char("Color")
+    sequence = fields.Integer("Sequence")

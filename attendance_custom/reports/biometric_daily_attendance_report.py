@@ -26,7 +26,7 @@ class BiometricAttendanceXLSX(models.AbstractModel):
                                                                  ODT.from_string(attend.punching_time)).strftime(
                                                '%Y-%m-%d')
                                            == data['form']['date'])
-        attendances = attendances.sorted(lambda r: r.department_id.id)
+        attendances = attendances.sorted(lambda r: r.department_id.sequence if r.department_id else 1000)
 
         # Setup columns
         sheet = workbook.add_worksheet(report_name[:31])
@@ -56,6 +56,8 @@ class BiometricAttendanceXLSX(models.AbstractModel):
             if obj.employee_id.id not in printed_employee_ids:
                 rgb_color = obj.employee_id.department_id.color
                 color = '#FFFFFF'
+                if not rgb_color:
+                    rgb_color = "rgba(255,0,0,1)"
                 if len(rgb_color) > 1:
                     color = rgb_to_hex(eval(rgb_color[rgb_color.index('('):rgb_color.rindex(',')] + ")"))
                 color = color.upper()
@@ -66,7 +68,7 @@ class BiometricAttendanceXLSX(models.AbstractModel):
                 sheet.write_row('C' + str(row + 6),
                                 [obj.employee_id.name,
                                  obj.employee_id.job_id.name or '-',
-                                 obj.employee_id.department_id.name], attendance)
+                                 obj.employee_id.department_id.name or '-'], attendance)
                 punchings = attendances.filtered(lambda a: a.employee_id.id == obj.employee_id.id)
                 punchings = punchings.sorted(lambda r: r.punching_time)
                 check_in = punchings[0].punching_time

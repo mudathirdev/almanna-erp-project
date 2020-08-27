@@ -38,7 +38,7 @@ class BiometricPeriodicAttendanceXLSX(models.AbstractModel):
             dates.append(day)
 
         employees = all_employees[:]
-        employees = employees.sorted(lambda e: e.department_id.id)
+        employees = employees.sorted(lambda e: e.department_id.sequence if e.department_id else 1000)
 
         # Setup columns
         sheet = workbook.add_worksheet(report_name[:31])
@@ -85,6 +85,8 @@ class BiometricPeriodicAttendanceXLSX(models.AbstractModel):
             total_hours = 0
             if len(obj.machine_attendance_ids) > 0:
                 rgb_color = obj.department_id.color
+                if not rgb_color:
+                    rgb_color = "rgba(255,0,0,1)"
                 color = '#FFFFFF'
                 if len(rgb_color) > 1:
                     color = rgb_to_hex(eval(rgb_color[rgb_color.index('('):rgb_color.rindex(',')] + ")"))
@@ -96,7 +98,7 @@ class BiometricPeriodicAttendanceXLSX(models.AbstractModel):
                 sheet.write_row('C' + str(row + 8),
                                 [obj.name,
                                  obj.job_id.name or '-',
-                                 obj.department_id.name], attendance)
+                                 obj.department_id.name or '-'], attendance)
                 employee_attendance_ids = \
                     obj.machine_attendance_ids.filtered(lambda a:
                                                         date_to >=
