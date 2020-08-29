@@ -18,7 +18,7 @@
     # always loaded
     'data': [
         'views/hr_department.xml',
-        'views/zk_machine_attendance_view.xml',
+        'views/zk_machine_attendance.xml',
         'wizards/daily_attendance_report_wizard_views.xml',
         'wizards/daily_absence_report_wizard_views.xml',
         'wizards/periodic_attendance_report_wizard_views.xml',
