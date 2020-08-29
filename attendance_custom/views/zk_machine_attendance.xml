@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+
+    <record id="action_zk_report_daily_attendance" model="ir.actions.act_window">
+        <field name="name">Attendance Analysis</field>
+        <field name="res_model">zk.report.daily.attendance</field>
+        <field name="view_type">form</field>
+        <field name="view_mode">tree</field>
+        <!--field name="context">{'search_default_my_attendance':1}</field-->
+        <field name="search_view_id" ref="hr_zk_attendance.view_zk_report_daily_attendance_search" />
+    </record>
+
+    <menuitem id="menu_zk_attendance_view"
+              name="All Attendance"
+              action="action_zk_report_daily_attendance"
+              parent="hr_attendance.menu_hr_attendance_manage_attendances" 
+              sequence="1"
+              groups="hr_attendance.group_hr_attendance_user"/>
+
+    <menuitem id="hr_zk_attendance.menu_zk_attendance_view" active="False"/>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_view_attendances" active="False"/>
+
+    <menuitem id="hr_attendance.menu_hr_attendance_view_employees_kanban" active="False"/>
+</odoo>
