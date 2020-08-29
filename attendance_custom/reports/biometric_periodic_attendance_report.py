@@ -47,9 +47,9 @@ class BiometricPeriodicAttendanceXLSX(models.AbstractModel):
         t_heading = workbook.add_format({'align': 'center', 'bold': True, 'bg_color': '#BD5B5B', 'border': 1,
                                          'valign': 'vcenter'})
         sheet.set_column('B:B', 10)
-        sheet.set_column('C:C', 25)
-        sheet.set_column('D:D', 20)
-        sheet.set_column('E:E', 25)
+        sheet.set_column('C:C', 35)
+        sheet.set_column('D:D', 30)
+        sheet.set_column('E:E', 35)
 
         # Add company logo
         # logo = self.env.user.sudo().company_id.logo

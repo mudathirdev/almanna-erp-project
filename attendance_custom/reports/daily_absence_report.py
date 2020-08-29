@@ -35,9 +35,9 @@ class AbsenceXLSX(models.AbstractModel):
         sheet = workbook.add_worksheet(report_name[:31])
         titles = workbook.add_format({'align': 'center', 'bold': True})
         t_heading = workbook.add_format({'align': 'center', 'bold': True, 'bg_color': '#BD5B5B', 'border': 1})
-        sheet.set_column('C:C', 25)
-        sheet.set_column('D:D', 20)
-        sheet.set_column('E:E', 25)
+        sheet.set_column('C:C', 35)
+        sheet.set_column('D:D', 30)
+        sheet.set_column('E:E', 35)
 
         # Headings and titles
         sheet.merge_range(0, 1, 0, 4, 'HR DEPARTMENT', titles)
