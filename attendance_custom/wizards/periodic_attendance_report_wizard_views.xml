@@ -32,10 +32,10 @@
         </record>
 
         <!-- Menu items -->
-        <menuitem id="periodic_attendance_menuitem"
+        <!--menuitem id="periodic_attendance_menuitem"
                   parent="hr_attendance.menu_hr_attendance_report"
                   name="Periodic Attendance Report"
-                  action="periodic_attendance_wizard_action"/>
+                  action="periodic_attendance_wizard_action"/-->
 
     </data>
 </odoo>

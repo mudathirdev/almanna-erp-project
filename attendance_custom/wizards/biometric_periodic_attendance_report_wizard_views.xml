@@ -24,7 +24,7 @@
 
         <!-- Wizard action -->
         <record id="biometric_periodic_attendance_wizard_action" model="ir.actions.act_window">
-            <field name="name">Biometric Periodic Attendances</field>
+            <field name="name">Periodic Attendances</field>
             <field name="res_model">attendance_custom.biometric_periodic_report_wizard</field>
             <field name="view_type">form</field>
             <field name="view_mode">form</field>
@@ -34,7 +34,7 @@
         <!-- Menu items -->
         <menuitem id="biometric_periodic_attendance_menuitem"
                   parent="hr_attendance.menu_hr_attendance_report"
-                  name="Biometric Periodic Attendance Report"
+                  name="Periodic Attendance Report"
                   action="biometric_periodic_attendance_wizard_action"/>
 
     </data>

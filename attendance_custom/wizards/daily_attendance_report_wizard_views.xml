@@ -31,10 +31,10 @@
         </record>
 
         <!-- Menu items -->
-        <menuitem id="daily_attendance_menuitem"
+        <!--menuitem id="daily_attendance_menuitem"
                   parent="hr_attendance.menu_hr_attendance_report"
                   name="Daily Attendance Report"
-                  action="daily_attendance_wizard_action"/>
+                  action="daily_attendance_wizard_action"/-->
 
     </data>
 </odoo>
