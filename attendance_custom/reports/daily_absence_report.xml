@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<odoo>
+    <data>
+        <!-- Daily Absence Report Action -->
+        <report
+            id="daily_absence_report"
+            model="zk.machine.attendance"
+            string="Daily Absence XLSX"
+            report_type="xlsx"
+            name="attendance_custom.daily_absence_report"
+            file="Daily Absence Report"
+            attachment_use="False"
+            menu="False"
+        />
+    </data>
+</odoo>
