@@ -19,17 +19,6 @@ function deg2rad(deg) {
     return deg * (Math.PI/180)
 }
 
-function getLocation() {
-    if (navigator.geolocation) {
-        navigator.geolocation.getCurrentPosition(returnPosition);
-    } else {
-        console.log("Cannot get location information!");
-    }
-}
-
-function returnPosition(position) {
-    return {latitude: position.coords.latitude, longitude: position.coords.longitude};
-}
 
 odoo.define('pos_location_restriction.screens', function (require) {
     "use strict";
@@ -45,29 +34,41 @@ odoo.define('pos_location_restriction.screens', function (require) {
 
     // When you click payment this code checks location of partner and location of POS
     screens.ActionpadWidget.include({
+        detectLocation: function() {
+            var self = this;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function returnPosition(position) {
+                    self.latitude = position.coords.latitude;
+                    self.longitude = position.coords.longitude;
+                });
+            } else {
+                console.log("Cannot get location information!");
+            }
+        },
         renderElement: function () {
             var self = this;
+            this.detectLocation();
             this._super();
             this.$('.pay').unbind();
-            this.$('.pay').click(function () {
+            this.$('.pay').click(function (e) {
                 var client = self.pos.get_order().get_client();
                 if (client) {
-                    var currentLocation = getLocation();
-                    if (currentLocation != undefined && currentLocation.latitude){
+                    if (self.latitude && self.longitude){
                         var lat1 = client.partner_latitude;
                         var lon1 = client.partner_longitude;
-                        var lat2 = currentLocation.latitude;
-                        var lon2 = currentLocation.longitude;
+                        var lat2 = self.latitude;
+                        var lon2 = self.longitude;
                         var distance_in_meters = getDistanceInMeters(lat1, lon1 , lat2, lon2);
                         if (distance_in_meters > self.pos.config.max_distance_to_sell){
-                            this.pos.gui.show_popup('dialog', {
-                                title: _t('Warning'),
-                                body: _t('You cannot sell because you are far from customer'),
+                            self.gui.show_popup('alert', {
+                                'title': _t('Warning'),
+                                'body': _t('You cannot sell because you are far from customer')
                             });
+                        }else{
+                            self.pos.gui.show_screen('payment');
                         }
                     }
                 }
-                self.pos.gui.show_screen('payment');
             });
         }
     });
