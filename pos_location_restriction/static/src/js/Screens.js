@@ -47,10 +47,10 @@ odoo.define('pos_location_restriction.screens', function (require) {
         },
         renderElement: function () {
             var self = this;
-            this.detectLocation();
             this._super();
             this.$('.pay').unbind();
             this.$('.pay').click(function (e) {
+                self.detectLocation();
                 var client = self.pos.get_order().get_client();
                 if (client) {
                     if (self.latitude && self.longitude){
@@ -71,6 +71,39 @@ odoo.define('pos_location_restriction.screens', function (require) {
                 }
             });
         }
+    });
+
+    // Add a button to client details screen which geo-locates him
+    screens.ClientListScreenWidget.include({
+        clearLocation: function() {
+            self.latitude = false;
+            self.longitude = false;
+        },
+        detectLocation: function() {
+            var self = this;
+            if (navigator.geolocation) {
+                navigator.geolocation.getCurrentPosition(function returnPosition(position) {
+                    self.latitude = position.coords.latitude;
+                    self.longitude = position.coords.longitude;
+                });
+            } else {
+                console.log("Cannot get location information!");
+            }
+        },
+        display_client_details: function(visibility,partner,clickpos){
+            var self = this;
+            this._super(visibility,partner,clickpos);
+            var contents = this.$('.client-details-contents');
+            contents.off('click','.button.geo-locate');
+            contents.on('click','.button.geo-locate',function(){
+                self.clearLocation();
+                self.detectLocation();
+                if (self.latitude && self.longitude){
+                    contents.find('input.client-longitude').val(self.longitude);
+                    contents.find('input.client-latitude').val(self.latitude);
+                }
+            });
+        },
     });
 
 });

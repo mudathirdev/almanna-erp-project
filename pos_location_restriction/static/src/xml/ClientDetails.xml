@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+
+    <!-- Add button and two fields (lat and long) -->
+    <t t-extend="ClientDetailsEdit">
+        <t t-jquery=".client-details-left" t-operation="append">
+            <div class="client-detail">
+                <span class='label'>Latitude</span>
+                <input class='detail client-latitude'
+                       name='partner_latitude'
+                       t-att-value='partner.partner_latitude || ""'
+                       placeholder='Latitude'/>
+            </div>
+        </t>
+        <t t-jquery=".client-details-right" t-operation="append">
+            <div class="client-detail">
+                <span class='label'>Longitude</span>
+                <input class='detail client-longitude'
+                       name='partner_longitude'
+                       t-att-value='partner.partner_longitude || ""'
+                       placeholder='Longitude'/>
+            </div>
+        </t>
+        <t t-jquery='.edit-buttons' t-operation="append">
+            <div class='button geo-locate'><i class='fa fa-map-marker'/></div>
+        </t>
+    </t>
+
+    <!-- Add lat and long fields to client details form -->
+    <t t-extend="ClientDetails">
+        <t t-jquery=".client-details-left" t-operation="append">
+            <div class="client-detail">
+                <span class='label'>Latitude</span>
+                <t t-if='partner.partner_latitude'>
+                    <span class='detail client-latitude'><t t-esc='partner.partner_latitude' /></span>
+                </t>
+                <t t-if='!partner.partner_latitude'>
+                    <span class='detail client-latitude empty'>N/A</span>
+                </t>
+            </div>
+        </t>
+        <t t-jquery=".client-details-right" t-operation="append">
+            <div class="client-detail">
+                <span class='label'>Longitude</span>
+                <t t-if='partner.partner_longitude'>
+                    <span class='detail client-longitude'><t t-esc='partner.partner_longitude' /></span>
+                </t>
+                <t t-if='!partner.partner_longitude'>
+                    <span class='detail client-longitude empty'>N/A</span>
+                </t>
+            </div>
+        </t>
+    </t>
+
+</templates>

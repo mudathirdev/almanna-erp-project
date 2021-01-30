@@ -11,6 +11,9 @@
         'views/assets.xml',
         'views/view_pos_config.xml',
     ],
+    'qweb': [
+        'static/src/xml/*.xml',
+    ],
     'application': False,
     'installable': True,
 }
